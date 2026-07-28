@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class BusCompanyService {
     private final BusCompanyRepository busCompanyRepository;
 
+
     // 1. Method One
     // ✅✅ Get All Bus Company
     public List<BusCompanyDTO> getAllBusCompany(){
@@ -42,7 +43,24 @@ public class BusCompanyService {
         .imageUrl(savedCompany.getImageUrl()).build();
     }
 
-    // 3 . Method Thre
+    // 3 . Method Three
+    // Update Bus Company Name
+    public BusCompanyDTO updateBusCompany(Integer id, BusCompanyCreateRequestDTO request){
+        BusCompany busCompany = busCompanyRepository.findById(id).orElseThrow(() -> new RuntimeException("No Company Found"));
+
+        busCompany.setCompanyName(request.getCompanyName());
+        busCompany.setImageUrl(request.getImageUrl());
+
+        BusCompany saved = busCompanyRepository.save(busCompany);
+
+        return BusCompanyDTO.builder()
+        .id(saved.getId())
+        .companyName(saved.getCompanyName())
+        .imageUrl(saved.getImageUrl()).build();
+    }
+
+
+    // 4 . Method four
     // ✅✅ Delete Bus Company
     public void deleteBusComapny(Integer id){
         busCompanyRepository.deleteById(id);

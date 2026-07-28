@@ -2,7 +2,6 @@ package com.tripz.backend.Bus.services;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
-
 import com.tripz.backend.Bus.dto.BusScheduleCreateRequestDTO;
 import com.tripz.backend.Bus.dto.BusScheduleDTO;
 import com.tripz.backend.Bus.entities.Bus;
@@ -93,6 +92,34 @@ public class BusScheduleService {
 
     // 5 . Method 5 
     //✅✅ Update Bus Schedule Method
-    
+    public BusScheduleDTO updateBusSchedule(Integer id, BusScheduleCreateRequestDTO request){
+        BusSchedule busSchedule = busScheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Bus Schedule Not Found"));
+        Bus bus = busRepository.findById(request.getBusId()).orElseThrow(() -> new RuntimeException("No Bus Found"));
+
+        String[] locations = request.getRoute().split(" - ");
+        if(locations.length != 2){
+            throw new RuntimeException("No Route Found!");
+        }
+
+        Route route = routeRepository.findByRouteFromLocationAndToLocation(locations[0].trim(), locations[1].trim()).orElseThrow(() -> new RuntimeException("No Route Found!"));
+
+        busSchedule.setBus(bus);
+        busSchedule.setRoute(route);
+        busSchedule.setTravelDate(request.getTravelDate());
+        busSchedule.setDepartureTime(request.getDepartureTime());
+        busSchedule.setArrivalTime(request.getArrivalTime());
+        busSchedule.setAvailableSeat(request.getAvailableSeat());
+
+        BusSchedule saved = busScheduleRepository.save(busSchedule);
+        return BusScheduleDTO.builder()
+        .id(saved.getId())
+        .bus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany().getCompanyName())
+        .route(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName())
+        .travelDate(saved.getTravelDate())
+        .departureTime(saved.getDepartureTime())
+        .arrivalTime(saved.getArrivalTime())
+        .availableSeat(saved.getAvailableSeat()).build();
+
+    }
 
 }
