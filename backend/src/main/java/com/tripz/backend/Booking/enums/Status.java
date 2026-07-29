@@ -1,4 +1,4 @@
-package com.tripz.backend.Booking.entities;
+package com.tripz.backend.Booking.enums;
 
 public enum Status {
     Pending,

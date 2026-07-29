@@ -2,6 +2,7 @@ package com.tripz.backend.Bus.services;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
 import com.tripz.backend.Bus.dto.BusScheduleCreateRequestDTO;
 import com.tripz.backend.Bus.dto.BusScheduleDTO;
 import com.tripz.backend.Bus.entities.Bus;
@@ -56,7 +57,7 @@ public class BusScheduleService {
     // 3 . Method Three
     //✅✅ Create Bus Schedule 
     public BusScheduleDTO createBusSchedule(BusScheduleCreateRequestDTO request){
-        Bus bus = busRepository.findById(request.getBusId()).orElseThrow(() -> new RuntimeException("No Bus Found"));
+        Bus bus = busRepository.findBusByPlateNumber(request.getBus()).orElseThrow(() -> new RuntimeException("Bus Not Found!"));
         String[] locations = request.getRoute().split(" - ");
 
         if(locations.length != 2){
@@ -75,51 +76,55 @@ public class BusScheduleService {
 
         BusSchedule saved = busScheduleRepository.save(schedule);
 
-        return BusScheduleDTO.builder()
-        .id(saved.getId())
-        .bus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany())
-        .route(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName())
-        .travelDate(saved.getTravelDate())
-        .departureTime(saved.getDepartureTime())
-        .arrivalTime(saved.getArrivalTime()).build();
+        // ✅✅ You can also use builder to make the code shorter
+        // return BusScheduleDTO.builder()
+        // .id(saved.getId())
+        // .bus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany())
+        // .route(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName())
+        // .travelDate(saved.getTravelDate())
+        // .departureTime(saved.getDepartureTime())
+        // .arrivalTime(saved.getArrivalTime()).build();
+        BusScheduleDTO dto = new BusScheduleDTO();
+        dto.setId(saved.getId());
+        dto.setBus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany().getCompanyName());
+        dto.setRoute(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName());
+        dto.setTravelDate(saved.getTravelDate());
+        dto.setDepartureTime(saved.getDepartureTime());
+        dto.setArrivalTime(saved.getArrivalTime());
+        dto.setAvailableSeat(saved.getAvailableSeat());
+        return dto;
     }
-
-    // 4 . Method 4
-    //✅✅ Delete Bus Schedule Method
-    void deleteBusSchedule(Integer id){
-        busScheduleRepository.deleteById(id);
-    }
-
-    // 5 . Method 5 
-    //✅✅ Update Bus Schedule Method
+    // 4. Method Four
+    //✅✅ Update Bus Schedule
     public BusScheduleDTO updateBusSchedule(Integer id, BusScheduleCreateRequestDTO request){
-        BusSchedule busSchedule = busScheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Bus Schedule Not Found"));
-        Bus bus = busRepository.findById(request.getBusId()).orElseThrow(() -> new RuntimeException("No Bus Found"));
-
+         BusSchedule schedules = busScheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("No Schedule Found"));
+         Bus bus = busRepository.findBusByPlateNumber(request.getBus()).orElseThrow(() -> new RuntimeException("Bus Not Found!"));
         String[] locations = request.getRoute().split(" - ");
+
         if(locations.length != 2){
-            throw new RuntimeException("No Route Found!");
+            throw new RuntimeException("Route Not Found");
         }
 
-        Route route = routeRepository.findByRouteFromLocationAndToLocation(locations[0].trim(), locations[1].trim()).orElseThrow(() -> new RuntimeException("No Route Found!"));
+        Route route = routeRepository.findByRouteFromLocationAndToLocation(locations[0].trim(), locations[1].trim()).orElseThrow(() -> new RuntimeException("Route Not Found"));
 
-        busSchedule.setBus(bus);
-        busSchedule.setRoute(route);
-        busSchedule.setTravelDate(request.getTravelDate());
-        busSchedule.setDepartureTime(request.getDepartureTime());
-        busSchedule.setArrivalTime(request.getArrivalTime());
-        busSchedule.setAvailableSeat(request.getAvailableSeat());
+        schedules.setBus(bus);
+        schedules.setRoute(route);
+        schedules.setTravelDate(request.getTravelDate());
+        schedules.setDepartureTime(request.getDepartureTime());
+        schedules.setArrivalTime(request.getArrivalTime());
+        schedules.setAvailableSeat(request.getAvailableSeat()
+    );
 
-        BusSchedule saved = busScheduleRepository.save(busSchedule);
-        return BusScheduleDTO.builder()
-        .id(saved.getId())
-        .bus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany().getCompanyName())
-        .route(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName())
-        .travelDate(saved.getTravelDate())
-        .departureTime(saved.getDepartureTime())
-        .arrivalTime(saved.getArrivalTime())
-        .availableSeat(saved.getAvailableSeat()).build();
+        BusSchedule saved = busScheduleRepository.save(schedules);
 
+        BusScheduleDTO dto = new BusScheduleDTO();
+        dto.setId(saved.getId());
+        dto.setBus(saved.getBus().getPlateNumber() + " - " + saved.getBus().getCompany().getCompanyName());
+        dto.setRoute(saved.getRoute().getFromLocation().getLocationName() + " - " + saved.getRoute().getToLocation().getLocationName());
+        dto.setTravelDate(saved.getTravelDate());
+        dto.setDepartureTime(saved.getDepartureTime());
+        dto.setArrivalTime(saved.getArrivalTime());
+        dto.setAvailableSeat(saved.getAvailableSeat());
+        return dto;
     }
-
 }

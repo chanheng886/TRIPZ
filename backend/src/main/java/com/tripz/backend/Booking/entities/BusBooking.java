@@ -38,10 +38,6 @@ public class BusBooking {
     @JoinColumn(name = "bus_schedule_id", nullable = false)
     private BusSchedule busSchedule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id" , nullable = false)
-    private User customer;
-
     @Column(name = "passenger_name", length = 255)
     private String passenger_name;
 

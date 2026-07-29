@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BusScheduleCreateRequestDTO {
-    private Integer busId;
+    private String bus;
     private String route;
     private LocalDate travelDate;
     private LocalTime departureTime;
