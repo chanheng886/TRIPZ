@@ -2,6 +2,7 @@ package com.tripz.backend.User.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tripz.backend.User.dto.UserCreateRequestDTO;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 1. Method One
     // ✅✅ Get All Users Function
@@ -55,6 +57,7 @@ public class UserService {
         
         User users = User.builder()
         .username(request.getUsername())
+        .password(passwordEncoder.encode(request.getPassword()))
         .role(role)
         .gender(gender)
         .email(request.getEmail())

@@ -32,7 +32,6 @@ public class BusService {
             dto.setSeatCapacity(bus.getSeatCapacity());
             dto.setPlateNumber(bus.getPlateNumber());
             dto.setImageUrl(bus.getImageUrl());
-
             return dto;
         }).toList();
     }

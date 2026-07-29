@@ -74,6 +74,5 @@ public class RouteService {
        dto.setToLocation(savedRoute.getToLocation().getLocationName());
 
        return dto;
-
     }
 }

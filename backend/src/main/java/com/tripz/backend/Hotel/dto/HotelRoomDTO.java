@@ -1,4 +1,4 @@
-package com.tripz.backend.Booking.dto;
+package com.tripz.backend.Hotel.dto;
 
 import java.math.BigDecimal;
 
@@ -11,11 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BusBookingDTO {
+public class HotelRoomDTO {
     private Integer id;
-    private Integer bookingId;
-    private String busSchedule;
-    private String passangerName;
-    private String seatNumber;
+    private String hotels;
+    private String roomType;
+    private Integer roomCount;
     private BigDecimal price;
 }

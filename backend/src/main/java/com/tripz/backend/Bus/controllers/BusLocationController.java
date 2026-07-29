@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/locations")
 @RequiredArgsConstructor
-@Tag(name = "Location")
+@Tag(name = "Location(Bus)")
 public class BusLocationController {
     private final BusLocationService busLocationService;
     @GetMapping

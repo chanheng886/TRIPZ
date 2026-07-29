@@ -42,12 +42,10 @@ public class Booking {
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false, length = 10)
-    private PaymentMethod payment;
+    @Column(name = "payment_method", nullable = false, length = 50)
+    private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 10)
+    @Column(name = "status", nullable = false, length = 20)
     private Status status = Status.Pending;
-
-
 }
