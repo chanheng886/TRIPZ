@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bus_booking
+      SPRING_DATASOURCE_USERNAME: tripz
+      SPRING_DATASOURCE_PASSWORD: tripz123
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: tripz
+      POSTGRES_PASSWORD: tripz123
+      POSTGRES_DB: bus_booking
+    ports:
+      - "5432:5432"
