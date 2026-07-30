@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tripz.backend.User.dto.LoginRequestDTO;
+import com.tripz.backend.User.dto.LoginResponseDTO;
 import com.tripz.backend.User.dto.UserCreateRequestDTO;
 import com.tripz.backend.User.dto.UserDTO;
 import com.tripz.backend.User.enums.Gender;
@@ -50,5 +52,10 @@ public class UserController {
     @PutMapping("role-update/{id}/{role}/{gender}")
     public UserDTO updateUser(@RequestBody UserCreateRequestDTO request,@PathVariable Integer id,@PathVariable  Roles role,@PathVariable Gender gender){
         return userService.updateUser(request, role, gender, id);
+    }
+
+    @PostMapping("/login")
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO request){
+        return userService.login(request);
     }
 }

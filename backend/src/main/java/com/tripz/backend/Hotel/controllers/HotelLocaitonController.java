@@ -26,15 +26,15 @@ public class HotelLocaitonController {
 
     @GetMapping
     public List<HotelLocationDTO> findAllHotelLocation(){
-        return hotelLocationService.getAllHotelLcoation();
+        return hotelLocationService.getAllHotelLocation();
     }
 
-    @GetMapping("/hotel-location/{locationname}")
+    @GetMapping("/location/{locationName}")
     public HotelLocationDTO findHotelLocationByLocaitonName(@PathVariable String locationName){
         return hotelLocationService.getHotelLocationByLocationName(locationName);
     }
 
-    @PostMapping("/create/")
+    @PostMapping("/create")
     public HotelLocationDTO createHotelLocation(@RequestBody HotelLocationCreateRequestDTO request){
         return hotelLocationService.createHotelLocation(request);
     }

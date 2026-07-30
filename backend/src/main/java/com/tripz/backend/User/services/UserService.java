@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tripz.backend.User.dto.LoginRequestDTO;
+import com.tripz.backend.User.dto.LoginResponseDTO;
 import com.tripz.backend.User.dto.UserCreateRequestDTO;
 import com.tripz.backend.User.dto.UserDTO;
 import com.tripz.backend.User.entities.User;
 import com.tripz.backend.User.enums.Gender;
 import com.tripz.backend.User.enums.Roles;
 import com.tripz.backend.User.repositories.UserRepository;
+import com.tripz.backend.config.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // 1. Method One
     // ✅✅ Get All Users Function
@@ -99,5 +103,23 @@ public class UserService {
         .username(saved.getUsername())
         .email(saved.getEmail())
         .phone(saved.getPhone()).build();
+    }
+
+    //<==============================>
+    public LoginResponseDTO login(LoginRequestDTO request){
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("Invalid Username or password"));
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new RuntimeException("Invalid Username or password");
+        }
+
+        String token = jwtUtil.generateToken(user.getUsername(), user.getId(), user.getRole().name());
+
+        return LoginResponseDTO.builder()
+        .token(token)
+        .username(user.getUsername())
+        .role(user.getRole().name())
+        .build();
+
     }
 }

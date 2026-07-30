@@ -20,7 +20,7 @@ public class HotelLocationService {
 
     // 1. Method One
     // ✅✅ Get All Hotel Locaiton
-    public List<HotelLocationDTO> getAllHotelLcoation(){
+    public List<HotelLocationDTO> getAllHotelLocation(){
         return hotelLocationRepository.findAll().stream().map(
             hotelLocation -> HotelLocationDTO.builder()
             .id(hotelLocation.getId())

@@ -26,17 +26,17 @@ public class RoomTypeController {
         return roomTypeService.getAllRoomType();
     }
 
-    @PostMapping("/create/")
+    @PostMapping("/create")
     public RoomDTO createRoomType(@RequestBody RoomCreateRequestDTO request){
         return roomTypeService.createRoomType(request);
     }
 
-    @PutMapping("/update/{id}/")
+    @PutMapping("/update/{id}")
     public RoomDTO updateRoomType(@RequestBody RoomCreateRequestDTO request,@PathVariable Integer id){
         return roomTypeService.updateRoomType(request, id);
     }
 
-    @DeleteMapping("/{id}/")
+    @DeleteMapping("/{id}")
     public void deleteRoomType(@PathVariable Integer id){
         roomTypeService.deleteRoomType(id);
     }
