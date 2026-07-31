@@ -65,7 +65,7 @@ public class BusBookingService {
 
             busBookingRepository.findByBusScheduleIdAndSeatNumber(request.getBusScheduleId(), request.getSeatNumber()).ifPresent(existing ->
                 {throw new RuntimeException("Seat " + request.getSeatNumber() + "is already booked");}
-            );;
+            );
 
             Booking booking = Booking.builder()
             .customer(customer)
