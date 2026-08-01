@@ -25,9 +25,10 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Bus Schedule")
 public class BusScheduleController {
     private final BusScheduleService busScheduleService;
+
     @GetMapping("fromlocation/{fromLocation}/toLocation/{toLocation}/travelDate/{travelDate}")
     public List<BusScheduleDTO> findBusByFromLocationAndToLocationAndTravelDate(
-        @PathVariable String fromLocation, String toLocation, LocalDate travelDate
+        @PathVariable String fromLocation, @PathVariable String toLocation, @PathVariable LocalDate travelDate
     ){
      
         return busScheduleService.findBusByLocation_fromLocationName_toLocationName_travelDate(fromLocation, toLocation, travelDate);
@@ -45,7 +46,7 @@ public class BusScheduleController {
 
     @DeleteMapping("/{id}")
     public void deleteBusSchedule(@PathVariable Integer id){
-        deleteBusSchedule(id);
+        busScheduleService.deleteBusSchedule(id);
     }
 
     @PutMapping("/{id}")

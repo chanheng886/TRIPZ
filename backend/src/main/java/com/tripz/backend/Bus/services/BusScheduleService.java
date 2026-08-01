@@ -127,4 +127,8 @@ public class BusScheduleService {
         dto.setAvailableSeat(saved.getAvailableSeat());
         return dto;
     }
+
+    public void deleteBusSchedule(Integer id){
+        busScheduleRepository.deleteById(id);
+    }
 }

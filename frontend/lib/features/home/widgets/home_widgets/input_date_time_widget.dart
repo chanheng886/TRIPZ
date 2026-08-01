@@ -37,6 +37,7 @@ class InputDateTimeWidget extends StatelessWidget {
                   children: [
                     Text(title, style: GoogleFonts.dmSans(fontSize: 16)),
                     TextField(
+                      enabled: false,
                       controller: dateController,
                       readOnly:
                           true, // or enabled: false if you want it greyed out

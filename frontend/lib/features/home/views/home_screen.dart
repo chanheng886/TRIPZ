@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/features/home/viewmodels/bus_schedule_view_model.dart';
+import 'package:frontend/features/home/views/bus_schedule_screen.dart';
 import 'package:frontend/features/home/views/search_bus_location_screen.dart';
 import 'package:frontend/features/home/widgets/home_widgets/app_bar_widget.dart';
 import 'package:frontend/features/home/widgets/home_widgets/input_date_time_widget.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends StatelessWidget {
     required this.leavingDateController,
   });
   final HomeController controller = Get.put(HomeController());
+  final BusScheduleViewModel viewModel = Get.put(BusScheduleViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +105,22 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         SizedBox(height: 10),
                                         //✅✅ 3 Select Departure Time
-                                        InputDateTimeWidget(
-                                          leading: RemixIcons.calendar_2_line,
-                                          title: "Leaving",
-                                          dateController: leavingDateController,
+                                        InkWell(
+                                          onTap: () {
+                                            _showDateTimePicker(
+                                              context,
+                                              onDateSelected: (date) {
+                                                leavingDateController.text =
+                                                    "${date.day}-${date.month}-${date.year}";
+                                              },
+                                            );
+                                          },
+                                          child: InputDateTimeWidget(
+                                            leading: RemixIcons.calendar_2_line,
+                                            title: "Leaving",
+                                            dateController:
+                                                leavingDateController,
+                                          ),
                                         ),
                                         SizedBox(height: 10),
                                         Row(
@@ -132,7 +147,19 @@ class HomeScreen extends StatelessWidget {
                                                     BorderRadius.circular(15),
                                               ),
                                               child: TextButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  viewModel.searchBusSchedule(
+                                                    fromLocation:
+                                                        fromWhereController
+                                                            .text,
+                                                    toLocation:
+                                                        toWhereController.text,
+                                                    travelDate:
+                                                        leavingDateController
+                                                            .text,
+                                                  );
+                                                  Get.to(BusScheduleScreen());
+                                                },
                                                 child: Text(
                                                   "Find Bus",
                                                   style: GoogleFonts.dmSans(
@@ -203,4 +230,64 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showDateTimePicker(
+  BuildContext context, {
+  required ValueChanged<DateTime> onDateSelected,
+}) {
+  DateTime selectedDate = DateTime.now();
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Select Departure Date",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+
+                CalendarDatePicker(
+                  initialDate: selectedDate,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime(2035),
+                  onDateChanged: (date) {
+                    setState(() {
+                      selectedDate = date;
+                    });
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      onDateSelected(selectedDate);
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Confirm"),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
 }
