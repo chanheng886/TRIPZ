@@ -24,9 +24,7 @@ class InputFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (page != null) {
-          Get.to(page!);
-        }
+        if (page != null) Get.to(() => page!);
       },
       child: Container(
         decoration: BoxDecoration(

@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^8.2.0
   font_awesome_flutter: ^11.0.0
   remixicon: ^4.9.3
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:

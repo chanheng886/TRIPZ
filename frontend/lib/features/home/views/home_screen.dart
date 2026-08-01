@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:frontend/features/home/views/search_bus_location_screen.dart';
-import 'package:frontend/features/home/widgets/app_bar_widget.dart';
-import 'package:frontend/features/home/widgets/input_date_time_widget.dart';
-import 'package:frontend/features/home/widgets/input_field_widget.dart';
-import 'package:frontend/features/home/widgets/ticket_type_widget.dart';
+import 'package:frontend/features/home/widgets/home_widgets/app_bar_widget.dart';
+import 'package:frontend/features/home/widgets/home_widgets/input_date_time_widget.dart';
+import 'package:frontend/features/home/widgets/home_widgets/input_field_widget.dart';
+import 'package:frontend/features/home/widgets/home_widgets/ticket_type_widget.dart';
 import 'package:frontend/features/shell/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,8 +82,10 @@ class HomeScreen extends StatelessWidget {
                                           title: "From",
                                           locationController:
                                               fromWhereController,
-                                          trailing: () {},
-                                          page: SearchBusLocationScreen(),
+                                          page: SearchBusLocationScreen(
+                                            searchLocationController:
+                                                fromWhereController,
+                                          ),
                                           trailingIcon:
                                               RemixIcons.arrow_up_down_line,
                                         ),
@@ -94,7 +95,10 @@ class HomeScreen extends StatelessWidget {
                                           leading: RemixIcons.map_pin_line,
                                           title: "To",
                                           locationController: toWhereController,
-                                          page: SearchBusLocationScreen(),
+                                          page: SearchBusLocationScreen(
+                                            searchLocationController:
+                                                toWhereController,
+                                          ),
                                         ),
                                         SizedBox(height: 10),
                                         //✅✅ 3 Select Departure Time
